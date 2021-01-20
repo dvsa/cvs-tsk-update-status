@@ -8,9 +8,9 @@
     "url": "https://github.com/dvsa/cvs-tsk-update-status.git"
   },
   "scripts": {
-    "start": "npm run kill:offline && npm run start:offline && node_modules/serverless/bin/serverless invoke local -f main --path tests/resources/queue-event.json",
-    "start:offline": "node_modules/gulp/bin/gulp.js start-serverless",
-    "kill:offline": "node_modules/gulp/bin/gulp.js kill-serverless",
+    "start": "BRANCH=local npm run kill:offline && npm run start:offline && serverless invoke local -f main --path tests/resources/queue-event.json",
+    "start:offline": "gulp start-serverless",
+    "kill:offline": "gulp kill-serverless",
     "build": "node_modules/typescript/bin/tsc --rootDir ./ --outDir .build --sourceMap false && npm run build:copy",
     "build:copy": "find src -type f \\( -name \"*.yml\" -or -name \"*.json\" \\) | cpio -pdm .build && find tests -type f \\( -name \"*.yml\" -or -name \"*.json\" -or -name \"*.base64\" \\)  | cpio -pdm .build",
     "test": "BRANCH=local AWS_XRAY_CONTEXT_MISSING=LOG_ERROR jest --testMatch=\"**/*.unitTest.ts\" --coverage",
@@ -19,7 +19,8 @@
     "security-checks": "git secrets --scan && git log -p | scanrepo",
     "sonar-scanner": "BRANCH=local npm run tslint && npm run coverage && sonar-scanner",
     "coverage": "BRANCH=local SLS_DEBUG=* jest --testMatch=\"**/*.*Test.ts\" --coverage",
-    "audit-dep": "npm audit --json | audit-filter --nsp-config=.nsprc --audit=-",
+    "audit:check": "npm audit --json | audit-filter --nsp-config=.nsprc --audit=-",
+    "audit-dep": "npm audit",
     "debug": "export SLS_DEBUG=* && BRANCH=local node --inspect ./node_modules/serverless/bin/serverless offline start",
     "package": "mkdir ${ZIP_NAME} && cp package.json package-lock.json ${ZIP_NAME} && cp -r .build/src/* ${ZIP_NAME}/ && cd ${ZIP_NAME} && npm ci --production && rm package.json package-lock.json && zip -qr ../${ZIP_NAME}.zip .",
     "tools-setup": "echo 'Nothing to do'",
