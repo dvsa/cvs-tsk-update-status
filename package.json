@@ -51,7 +51,7 @@
     "jest-plugin-context": "^2.9.0",
     "jest-sonar-reporter": "^2.0.0",
     "lambda-tester": "^3.5.0",
-    "serverless": "1.56.1",
+    "serverless": "^2.30.3",
     "serverless-dependency-invoke": "^0.0.9",
     "serverless-offline": "^6.5.0",
     "serverless-plugin-tracing": "^2.0.0",
