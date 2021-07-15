@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/dvsa/cvs-tsk-update-status.git"
   },
+  "engines": {
+    "node": "14.*"
+  },
   "scripts": {
     "start": "BRANCH=local npm run kill:offline && npm run start:offline && serverless invoke local -f main --path tests/resources/queue-event.json",
     "start:offline": "gulp start-serverless",
