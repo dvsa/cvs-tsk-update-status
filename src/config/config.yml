@@ -1,17 +1,17 @@
 endpoints:
   local-global:
     params:
-      apiVersion: '2015-03-31'
+      apiVersion: "2015-03-31"
       region: eu-west-1
       endpoint: http://localhost:4000
     functions:
       updateTechRecordStatus:
         name: cvs-svc-global-dev-updateTechRecordStatus
       updateEuVehicleCategory:
-        name: cvs-svc-global-dev-updateEuVehicleCategory  
+        name: cvs-svc-global-dev-updateEuVehicleCategory
   remote:
     params:
-      apiVersion: '2015-03-31'
+      apiVersion: "2015-03-31"
     functions:
       updateTechRecordStatus:
         name: technical-records-${BRANCH}
