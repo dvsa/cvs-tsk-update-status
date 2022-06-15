@@ -22,7 +22,7 @@
     "lint": "tslint src/**/*.ts tests/**/*.ts -q",
     "security-checks": "git secrets --scan && git log -p | scanrepo",
     "format": "prettier --write .",
-    "sonar-scanner": "sonar-scanner",
+    "sonar-scanner": "npm run test && sonar-scanner",
     "audit": "npm audit --prod",
     "debug": "export SLS_DEBUG=* && BRANCH=local node --inspect ./node_modules/serverless/bin/serverless offline start",
     "package": "mkdir ${ZIP_NAME} && cp package.json package-lock.json ${ZIP_NAME} && cp -r .build/src/* ${ZIP_NAME}/ && cd ${ZIP_NAME} && npm ci --production && rm package.json package-lock.json && zip -qr ../${ZIP_NAME}.zip .",
@@ -66,7 +66,7 @@
     "typescript": "^3.6.4"
   },
   "jestSonar": {
-    "reportPath": ".reports",
+    "reportPath": "coverage",
     "reportFile": "test-report.xml",
     "indent": 4
   },
