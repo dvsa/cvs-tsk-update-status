@@ -15,28 +15,30 @@ export function updateTechRecord(event: SQSEvent) {
 
   event.Records.forEach((record: SQSRecord) => {
     const test = JSON.parse(record.body);
-    console.log("payload recieved from queue:", test);
-    const promiseUpdateStatus =
-      UpdateTechRecordService.updateStatusBySystemNumber(
-        test.systemNumber,
-        test.testStatus,
-        test.testTypes.testResult,
-        test.testTypes.testTypeId,
-        test.newStatus,
-        test.createdById,
-        test.createdByName
-      );
-    if (test.euVehicleCategory) {
-      const promiseUpdateEuCategory =
-        UpdateTechRecordService.updateEuVehicleCategory(
+    console.log("payload received from queue:", test);
+    if (test.testStatus === "submitted") {
+      const promiseUpdateStatus =
+        UpdateTechRecordService.updateStatusBySystemNumber(
           test.systemNumber,
-          test.euVehicleCategory,
+          test.testStatus,
+          test.testTypes.testResult,
+          test.testTypes.testTypeId,
+          test.newStatus,
           test.createdById,
           test.createdByName
         );
-      promisesArray.push(promiseUpdateEuCategory);
+      if (test.euVehicleCategory) {
+        const promiseUpdateEuCategory =
+          UpdateTechRecordService.updateEuVehicleCategory(
+            test.systemNumber,
+            test.euVehicleCategory,
+            test.createdById,
+            test.createdByName
+          );
+        promisesArray.push(promiseUpdateEuCategory);
+      }
+      promisesArray.push(promiseUpdateStatus);
     }
-    promisesArray.push(promiseUpdateStatus);
   });
 
   return Promise.all(promisesArray)
