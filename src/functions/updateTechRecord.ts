@@ -1,5 +1,7 @@
 import { SQSEvent, SQSRecord } from "aws-lambda";
 import { UpdateTechRecordService } from "../services/UpdateTechRecordService";
+import { singleTestUpdate } from "./singleTestUpdate";
+import { multiTestUpdate } from "./multiTestUpdate";
 
 export function updateTechRecord(event: SQSEvent) {
   if (
@@ -11,32 +13,17 @@ export function updateTechRecord(event: SQSEvent) {
     throw new Error("Event is empty");
   }
 
-  const promisesArray: Array<Promise<any>> = [];
+  let promisesArray: Array<Promise<any>> = [];
 
   event.Records.forEach((record: SQSRecord) => {
     const test = JSON.parse(record.body);
     console.log("payload recieved from queue:", test);
-    const promiseUpdateStatus =
-      UpdateTechRecordService.updateStatusBySystemNumber(
-        test.systemNumber,
-        test.testStatus,
-        test.testTypes.testResult,
-        test.testTypes.testTypeId,
-        test.newStatus,
-        test.createdById,
-        test.createdByName
-      );
-    if (test.euVehicleCategory) {
-      const promiseUpdateEuCategory =
-        UpdateTechRecordService.updateEuVehicleCategory(
-          test.systemNumber,
-          test.euVehicleCategory,
-          test.createdById,
-          test.createdByName
-        );
-      promisesArray.push(promiseUpdateEuCategory);
+
+    if (test.testTypes.length > 1) {
+      promisesArray = promisesArray.concat(singleTestUpdate(test));
+    } else {
+      promisesArray = promisesArray.concat(multiTestUpdate(test));
     }
-    promisesArray.push(promiseUpdateStatus);
   });
 
   return Promise.all(promisesArray)

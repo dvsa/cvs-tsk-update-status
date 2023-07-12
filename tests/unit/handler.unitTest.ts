@@ -14,16 +14,16 @@ context("When invoking the handler", () => {
     expect(
       UpdateTechRecordService.updateStatusBySystemNumber
     ).toHaveBeenCalledWith(
-      "abc123",
+      "11000027",
       "submitted",
-      "fail",
-      "1",
+      "pass",
+      "95",
       undefined,
       "1234",
-      "dorel"
+      "Test User"
     );
     expect(
       UpdateTechRecordService.updateEuVehicleCategory
-    ).toHaveBeenCalledWith("abc123", "m1", "1234", "dorel");
+    ).toHaveBeenCalledWith("11000027", "m1", "1234", "Test User");
   });
 });
