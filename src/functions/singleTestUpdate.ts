@@ -1,7 +1,7 @@
 import { UpdateTechRecordService } from "../services/UpdateTechRecordService";
 import { validateUpdateStatus } from "../validators/validateUpdateStatus";
 
-export const singleTestUpdate = (test: any): Promise<any>[] => {
+export const singleTestUpdate = (test: any): Array<Promise<any>> => {
   const promisesArray = [];
 
   const updateNeeded = validateUpdateStatus(
