@@ -1,6 +1,12 @@
+const mockProcessRecord = jest.fn();
+
 import { handler } from "../../src/handler";
 import event from "../resources/queue-event.json";
 import { UpdateTechRecordService } from "../../src/services/UpdateTechRecordService";
+
+jest.mock("../../src/utils/processRecord.ts", () => ({
+  processRecord: mockProcessRecord,
+}));
 
 context("When invoking the handler", () => {
   it("it should call the service with the correct parameters", async () => {
@@ -10,20 +16,21 @@ context("When invoking the handler", () => {
     UpdateTechRecordService.updateEuVehicleCategory = jest
       .fn()
       .mockReturnValue(Promise.resolve("test value"));
+    mockProcessRecord.mockReturnValue(JSON.parse(event.Records[0].body));
     const resp = await handler(event as any);
     expect(
       UpdateTechRecordService.updateStatusBySystemNumber
     ).toHaveBeenCalledWith(
-      "abc123",
+      "11000027",
       "submitted",
-      "fail",
-      "1",
+      "pass",
+      "95",
       undefined,
       "1234",
-      "dorel"
+      "Test User"
     );
     expect(
       UpdateTechRecordService.updateEuVehicleCategory
-    ).toHaveBeenCalledWith("abc123", "m1", "1234", "dorel");
+    ).toHaveBeenCalledWith("11000027", "m1", "1234", "Test User");
   });
 });
