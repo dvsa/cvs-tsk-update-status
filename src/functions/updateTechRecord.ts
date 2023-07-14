@@ -1,7 +1,7 @@
 import { SQSEvent, SQSRecord } from "aws-lambda";
-import { UpdateTechRecordService } from "../services/UpdateTechRecordService";
 import { singleTestUpdate } from "./singleTestUpdate";
 import { multiTestUpdate } from "./multiTestUpdate";
+import { processRecord } from "../utils/processRecord";
 
 export function updateTechRecord(event: SQSEvent) {
   if (
@@ -16,10 +16,11 @@ export function updateTechRecord(event: SQSEvent) {
   let promisesArray: Array<Promise<any>> = [];
 
   event.Records.forEach((record: SQSRecord) => {
-    const test = JSON.parse(record.body);
-    console.log("payload recieved from queue:", test);
+    console.log("payload recieved from queue:", record);
+    const test = processRecord(record);
+    console.log("processed record:", test ?? "no test");
 
-    if (test.testTypes.length > 1) {
+    if (test && test.testTypes.length > 1) {
       promisesArray = promisesArray.concat(singleTestUpdate(test));
     } else {
       promisesArray = promisesArray.concat(multiTestUpdate(test));
