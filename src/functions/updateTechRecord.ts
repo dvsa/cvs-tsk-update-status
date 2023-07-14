@@ -22,7 +22,7 @@ export function updateTechRecord(event: SQSEvent) {
 
     if (test && test.testTypes.length > 1) {
       promisesArray = promisesArray.concat(singleTestUpdate(test));
-    } else {
+    } else if (test) {
       promisesArray = promisesArray.concat(multiTestUpdate(test));
     }
   });
