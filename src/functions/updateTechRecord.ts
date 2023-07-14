@@ -1,5 +1,4 @@
 import { SQSEvent, SQSRecord } from "aws-lambda";
-import { singleTestUpdate } from "./singleTestUpdate";
 import { multiTestUpdate } from "./multiTestUpdate";
 import { processRecord } from "../utils/processRecord";
 
@@ -20,9 +19,7 @@ export function updateTechRecord(event: SQSEvent) {
     const test = processRecord(record);
     console.log("processed record:", test ?? "no test");
 
-    if (test && test.testTypes.length > 1) {
-      promisesArray = promisesArray.concat(singleTestUpdate(test));
-    } else if (test) {
+    if (test) {
       promisesArray = promisesArray.concat(multiTestUpdate(test));
     }
   });
