@@ -36,7 +36,7 @@
     "@aws-sdk/util-dynamodb": "^3.369.0",
     "aws-xray-sdk": "^2.4.0",
     "node-yaml": "^3.2.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.1.14",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "ts-node-register": "^1.0.0"
