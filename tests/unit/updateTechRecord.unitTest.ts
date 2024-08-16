@@ -15,7 +15,7 @@ context("when a failing test result is read from the queue", () => {
       expect.assertions(1);
       try {
         await updateTechRecord({} as any);
-      } catch (err) {
+      } catch (err: any) {
         expect(err.message).toEqual("Event is empty");
       }
     });
@@ -26,7 +26,7 @@ context("when a failing test result is read from the queue", () => {
       expect.assertions(1);
       try {
         await updateTechRecord({ otherStuff: "hi", Records: [] } as any);
-      } catch (err) {
+      } catch (err: any) {
         expect(err.message).toEqual("Event is empty");
       }
     });
