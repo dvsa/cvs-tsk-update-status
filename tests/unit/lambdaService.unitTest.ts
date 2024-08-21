@@ -19,7 +19,7 @@ context("When invoking LambdaService ", () => {
 
     try {
       const result = await LambdaService.invoke("test", {});
-    } catch (error: any) {
+    } catch (error) {
       expect(error.statusCode).toBe(500);
       expect(error.body).toBe("Lambda invocation returned bad data: undefined");
     }
